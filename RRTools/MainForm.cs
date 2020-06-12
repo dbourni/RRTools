@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace RRTools
 {
@@ -32,11 +25,14 @@ namespace RRTools
         private void button2_Click(object sender, EventArgs e)
         {
             String data = Get_request("https://api.raceresult.com/153860/324CV6Q778H7G5VZ8IIR5W7RAFSVBJL7");
-            if (data !="error")
+            if (data != "error")
             {
-                MessageBox.Show(data);
+                XmlSerializer serializer = new XmlSerializer(typeof(List));
+                StringReader stringReader = new StringReader(data);
+                List PilotsList;
+                PilotsList = (List)serializer.Deserialize(stringReader);
+                MessageBox.Show(PilotsList.Pilots.Length.ToString());
             }
-
         }
 
         private string Get_request(string Url)
